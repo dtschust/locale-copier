@@ -42,6 +42,7 @@ function buildAndDownloadZip(acceptedFiles, locales) {
         downloadFileName = filename;
       }
 
+      zip.file(`${downloadFileName}/${filename}.${extension}`, file)
       locales.forEach((locale) => {
         zip.file(`${downloadFileName}/${filename}.${locale}.${extension}`, file)
       });
