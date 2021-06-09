@@ -31,19 +31,26 @@ function MyDropzone(props) {
 
 function buildAndDownloadZip(acceptedFiles, locales) {
   if (acceptedFiles && acceptedFiles.length) {
+    let downloadFileName = 'output';
     const zip = new JSZip();
-    acceptedFiles.forEach((file) => {
+    acceptedFiles.forEach((file, i) => {
       const name = file && file.name && file.name.split('.');
       const extension = name.pop();
       const filename = name.join('.');
+
+      if (i === 0 && acceptedFiles.length === 1) {
+        downloadFileName = filename;
+      }
+
       locales.forEach((locale) => {
-        zip.file(`output/${filename}.${locale}.${extension}`, file)
+        zip.file(`${downloadFileName}/${filename}.${locale}.${extension}`, file)
       });
 
     })
-  zip.generateAsync({type:"blob"}).then(function (blob) {
-    saveAs(blob, `output.zip`);
-  });
+
+    zip.generateAsync({type:"blob"}).then(function (blob) {
+      saveAs(blob, `${downloadFileName}.zip`);
+    });
   }
 
 }
